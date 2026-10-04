@@ -11,4 +11,19 @@ export default defineConfig({
       '/api': 'http://localhost:60702',
     },
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        // Third-party libraries go in their own files: it keeps each file under the size warning,
+        // and the browser can cache them separately from our own code, which changes more often.
+        // MUI is the largest library, so it gets a file of its own.
+        codeSplitting: {
+          groups: [
+            { name: 'mui', test: /node_modules[\\/]@mui/, priority: 2 },
+            { name: 'vendor', test: /node_modules/, priority: 1 },
+          ],
+        },
+      },
+    },
+  },
 })
