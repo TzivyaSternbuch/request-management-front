@@ -4,7 +4,7 @@ import Button from '@mui/material/Button'
 import Popover from '@mui/material/Popover'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import type { DateField, SearchFormValues } from '../hooks/useRequestSearchForm'
+import type { DateField, SearchFormValues } from '../models/requestSearchModels'
 import { formatDateOnly } from '../../../utils/formatDateOnly'
 
 const BUTTON_LABEL = 'Created'

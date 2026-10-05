@@ -1,6 +1,6 @@
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
-import type { SearchFormValues, SetSearchField } from '../hooks/useRequestSearchForm'
+import type { SearchFormValues, SetSearchField } from '../models/requestSearchModels'
 import { formatDateOnly } from '../../../utils/formatDateOnly'
 import { STATUS_LABELS, TYPE_LABELS } from '../logic/requestLabels'
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { RequestSearchFilters, RequestStatus, RequestType } from '../api/requestModels'
+import type { DateField, RequestSearchFilters, SearchFormValues, SetSearchField } from '../models/requestSearchModels'
 
 // Mirrors SearchRequestsQuery.RequestNumberMaxLength on the server.
 const REQUEST_NUMBER_MAX_LENGTH = 50
@@ -14,18 +14,6 @@ const FIRST_COMPLETE_DATE = '1000-01-01'
 const REQUEST_NUMBER_TOO_LONG = `Use at most ${REQUEST_NUMBER_MAX_LENGTH} characters.`
 const FROM_AFTER_TO = 'Must be on or before "To".'
 const TO_BEFORE_FROM = 'Must be on or after "From".'
-
-export interface SearchFormValues {
-  requestNumber: string
-  status: RequestStatus[]
-  type: RequestType[]
-  createdFrom: string
-  createdTo: string
-}
-
-export type SetSearchField = <K extends keyof SearchFormValues>(field: K, value: SearchFormValues[K]) => void
-
-export type DateField = 'createdFrom' | 'createdTo'
 
 type SearchFormErrors = Partial<Record<keyof SearchFormValues, string>>
 

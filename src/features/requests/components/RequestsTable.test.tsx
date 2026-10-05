@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import type { RequestSort } from '../api/requestModels'
+import type { RequestSort } from '../models/requestSearchModels'
 import { createRequest } from '../../../test/createRequest'
 import RequestsTable from './RequestsTable'
 

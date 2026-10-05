@@ -1,7 +1,8 @@
+import type { SortDirection } from '../../../sorting/sortModels'
+
 export type RequestStatus = 'New' | 'InProgress' | 'Completed' | 'Cancelled'
 export type RequestType = 'General' | 'Legal' | 'Payment' | 'Appeal'
 export type RequestSortField = 'CreatedAt' | 'RequestNumber' | 'Status' | 'Type'
-export type SortDirection = 'Asc' | 'Desc'
 
 export interface RequestDto {
   id: number
@@ -24,14 +25,4 @@ export interface SearchRequestsQuery {
   sortDir?: SortDirection[]
   page?: number
   pageSize?: number
-}
-
-export type RequestSearchFilters = Pick<
-  SearchRequestsQuery,
-  'requestNumber' | 'status' | 'type' | 'createdFrom' | 'createdTo'
->
-
-export interface RequestSort {
-  field: RequestSortField
-  direction: SortDirection
 }
