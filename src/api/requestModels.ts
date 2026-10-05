@@ -1,6 +1,6 @@
 export type RequestStatus = 'New' | 'InProgress' | 'Completed' | 'Cancelled'
 export type RequestType = 'General' | 'Legal' | 'Payment' | 'Appeal'
-export type RequestSortField = 'CreatedAt' | 'RequestNumber' | 'Status' | 'Type' | 'CustomerId'
+export type RequestSortField = 'CreatedAt' | 'RequestNumber' | 'Status' | 'Type'
 export type SortDirection = 'Asc' | 'Desc'
 
 export interface RequestDto {
@@ -18,7 +18,6 @@ export interface SearchRequestsQuery {
   requestNumber?: string
   status?: RequestStatus[]
   type?: RequestType[]
-  customerId?: number
   createdFrom?: string
   createdTo?: string
   sortBy?: RequestSortField
