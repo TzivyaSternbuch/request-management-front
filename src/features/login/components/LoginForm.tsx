@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import type { CurrentUser } from '../../../auth/currentUser'
 import { parseUserId } from '../../../auth/userId'
+import { APP_NAME } from '../../../components/layout/appName'
 import AppLogo from '../../../components/layout/AppLogo'
 import { useLogin } from '../hooks/useLogin'
 
@@ -36,7 +37,7 @@ function LoginForm({ onLogin }: LoginFormProps) {
           <Stack spacing={1} sx={{ alignItems: 'center', textAlign: 'center' }}>
             <AppLogo size={48} />
             <Typography variant="h5" component="h1" sx={{ fontWeight: 600 }}>
-              Request Management
+              {APP_NAME}
             </Typography>
             <Typography color="text.secondary">Log in to see your requests</Typography>
           </Stack>

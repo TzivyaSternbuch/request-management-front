@@ -1,4 +1,4 @@
-import { formatDateOnly } from '../../../utils/formatDateOnly'
+import { formatDateOnly } from '../../../utils/formatDate'
 import type { SearchFormValues, SetSearchField } from '../models/requestSearchModels'
 import { STATUS_LABELS, TYPE_LABELS } from './requestLabels'
 
