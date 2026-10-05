@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import type { RequestSort } from '../api/requestModels'
-import { createRequest } from '../test/createRequest'
+import { createRequest } from '../../../test/createRequest'
 import RequestsTable from './RequestsTable'
 
 const NEWEST_FIRST: RequestSort[] = [{ field: 'CreatedAt', direction: 'Desc' }]

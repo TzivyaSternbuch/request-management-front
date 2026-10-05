@@ -1,12 +1,12 @@
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { PagedResult } from '../api/commonModels'
+import type { PagedResult } from '../../../api/commonModels'
 import type { RequestDto } from '../api/requestModels'
 import { searchRequests } from '../api/requestsApi'
-import type { CurrentUser } from '../auth/currentUser'
-import { createQueryClientWrapper } from '../test/createQueryClientWrapper'
-import { createRequest } from '../test/createRequest'
+import type { CurrentUser } from '../../../auth/currentUser'
+import { createQueryClientWrapper } from '../../../test/createQueryClientWrapper'
+import { createRequest } from '../../../test/createRequest'
 import RequestsPage from './RequestsPage'
 
 vi.mock(import('../api/requestsApi'), () => ({

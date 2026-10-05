@@ -2,7 +2,7 @@ import TableCell from '@mui/material/TableCell'
 import TableSortLabel from '@mui/material/TableSortLabel'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import type { RequestSort, RequestSortField, SortDirection } from '../api/requestModels'
+import type { RequestSort, RequestSortField, SortDirection } from '../features/requests/api/requestModels'
 
 // MUI writes directions in lower case; the server uses Asc / Desc.
 const MUI_DIRECTIONS: Record<SortDirection, 'asc' | 'desc'> = {

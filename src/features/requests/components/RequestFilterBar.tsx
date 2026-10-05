@@ -9,8 +9,8 @@ import type { RequestSearchFilters } from '../api/requestModels'
 import { useRequestSearchForm } from '../hooks/useRequestSearchForm'
 import ActiveFilterChips from './ActiveFilterChips'
 import DateRangeButton from './DateRangeButton'
-import FilterMenuButton from './FilterMenuButton'
-import { STATUS_LABELS, STATUS_OPTIONS, TYPE_LABELS, TYPE_OPTIONS } from './requestLabels'
+import FilterMenuButton from '../../../components/FilterMenuButton'
+import { STATUS_LABELS, STATUS_OPTIONS, TYPE_LABELS, TYPE_OPTIONS } from '../logic/requestLabels'
 
 const SEARCH_FIELD_WIDTH = 240
 

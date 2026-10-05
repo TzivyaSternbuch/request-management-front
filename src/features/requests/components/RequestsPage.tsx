@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Paper from '@mui/material/Paper'
 import type { RequestSearchFilters, RequestSort, RequestSortField } from '../api/requestModels'
-import type { CurrentUser } from '../auth/currentUser'
+import type { CurrentUser } from '../../../auth/currentUser'
 import { useRequestSearch } from '../hooks/useRequestSearch'
 import RequestFilterBar from './RequestFilterBar'
 import RequestsResults from './RequestsResults'

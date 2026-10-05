@@ -1,6 +1,6 @@
-import type { CurrentUser } from '../auth/currentUser'
-import type { PagedResult } from './commonModels'
-import { getJson } from './httpClient'
+import type { CurrentUser } from '../../../auth/currentUser'
+import type { PagedResult } from '../../../api/commonModels'
+import { getJson } from '../../../api/httpClient'
 import type { RequestDto, SearchRequestsQuery } from './requestModels'
 
 const REQUESTS_URL = '/api/requests'

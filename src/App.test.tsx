@@ -2,17 +2,17 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { MemoryRouter } from 'react-router'
-import { searchRequests } from './api/requestsApi'
-import { getCurrentUser } from './api/usersApi'
+import { searchRequests } from './features/requests/api/requestsApi'
+import { getCurrentUser } from './features/login/api/usersApi'
 import { saveCurrentUser } from './auth/currentUserStorage'
 import App from './App'
 import { createQueryClientWrapper } from './test/createQueryClientWrapper'
 
-vi.mock(import('./api/requestsApi'), () => ({
+vi.mock(import('./features/requests/api/requestsApi'), () => ({
   searchRequests: vi.fn(),
 }))
 
-vi.mock(import('./api/usersApi'), () => ({
+vi.mock(import('./features/login/api/usersApi'), () => ({
   getCurrentUser: vi.fn(),
 }))
 

@@ -6,9 +6,9 @@ import Card from '@mui/material/Card'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import type { CurrentUser } from '../auth/currentUser'
+import type { CurrentUser } from '../../../auth/currentUser'
 import { useLogin } from '../hooks/useLogin'
-import AppLogo from './AppLogo'
+import AppLogo from '../../../components/layout/AppLogo'
 
 // The server reads X-User-Id into an int, so larger values would be rejected.
 const MAX_USER_ID = 2_147_483_647

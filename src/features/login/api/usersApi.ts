@@ -1,5 +1,5 @@
-import type { CurrentUser } from '../auth/currentUser'
-import { getJson } from './httpClient'
+import type { CurrentUser } from '../../../auth/currentUser'
+import { getJson } from '../../../api/httpClient'
 
 const CURRENT_USER_URL = '/api/users/me'
 

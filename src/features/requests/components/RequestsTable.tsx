@@ -8,8 +8,8 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import type { RequestDto, RequestSort, RequestSortField, RequestStatus } from '../api/requestModels'
-import { STATUS_LABELS } from './requestLabels'
-import SortableHeaderCell from './SortableHeaderCell'
+import { STATUS_LABELS } from '../logic/requestLabels'
+import SortableHeaderCell from '../../../components/SortableHeaderCell'
 
 const STATUS_COLORS: Record<RequestStatus, ChipProps['color']> = {
   New: 'info',

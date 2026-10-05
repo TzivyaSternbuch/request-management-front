@@ -5,7 +5,7 @@ import Popover from '@mui/material/Popover'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import type { DateField, SearchFormValues } from '../hooks/useRequestSearchForm'
-import { formatDateOnly } from './formatDateOnly'
+import { formatDateOnly } from '../../../utils/formatDateOnly'
 
 const BUTTON_LABEL = 'Created'
 const POPOVER_WIDTH = 260
