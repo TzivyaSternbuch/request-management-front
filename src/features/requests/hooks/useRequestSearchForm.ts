@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import { useDebouncedCallback } from '../../../hooks/useDebouncedCallback'
 import {
   canApply,
   hasAnyFilter,
@@ -41,9 +42,7 @@ export function useRequestSearchForm(onSearch: (filters: RequestSearchFilters) =
   const [values, setValues] = useState(EMPTY_FORM_VALUES)
   const [appliedValues, setAppliedValues] = useState(EMPTY_FORM_VALUES)
   const [errors, setErrors] = useState<SearchFormErrors>({})
-  const pendingSearchRef = useRef<number | undefined>(undefined)
-
-  useEffect(() => () => window.clearTimeout(pendingSearchRef.current), [])
+  const pendingSearch = useDebouncedCallback(onSearch, SEARCH_DELAY_MS)
 
   function setField<K extends keyof SearchFormValues>(field: K, value: SearchFormValues[K]) {
     const newValues = { ...values, [field]: value }
@@ -75,12 +74,11 @@ export function useRequestSearchForm(onSearch: (filters: RequestSearchFilters) =
 
   function apply(newValues: SearchFormValues) {
     setAppliedValues(newValues)
-    window.clearTimeout(pendingSearchRef.current)
-    pendingSearchRef.current = window.setTimeout(() => onSearch(toFilters(newValues)), SEARCH_DELAY_MS)
+    pendingSearch.schedule(toFilters(newValues))
   }
 
   function reset() {
-    window.clearTimeout(pendingSearchRef.current)
+    pendingSearch.cancel()
     setValues(EMPTY_FORM_VALUES)
     setAppliedValues(EMPTY_FORM_VALUES)
     setErrors({})
