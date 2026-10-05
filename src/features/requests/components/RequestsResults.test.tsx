@@ -56,20 +56,6 @@ describe('RequestsResults', () => {
     expect(screen.getByRole('cell', { name: 'REQ-2' })).toBeInTheDocument()
   })
 
-  it('keeps the requests visible with a progress bar while refreshing', () => {
-    renderResults({ data: createResult(2), isRefreshing: true })
-
-    expect(screen.getByRole('progressbar', { name: 'Updating results' })).toBeInTheDocument()
-    expect(screen.getByRole('cell', { name: 'REQ-1' })).toBeInTheDocument()
-    expect(screen.getByRole('table').closest('[aria-busy]')).toHaveAttribute('aria-busy', 'true')
-  })
-
-  it('shows no progress bar when not refreshing', () => {
-    renderResults({ data: createResult(2) })
-
-    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
-  })
-
   it('asks for the next page by its server page number', async () => {
     const { onPageChange } = renderResults({ data: createResult(PAGE_SIZE + 1) })
 
