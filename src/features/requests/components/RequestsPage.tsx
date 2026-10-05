@@ -3,6 +3,7 @@ import Paper from '@mui/material/Paper'
 import type { RequestSortField } from '../api/requestModels'
 import type { RequestSearchFilters, RequestSort } from '../models/requestSearchModels'
 import type { CurrentUser } from '../../../auth/currentUser'
+import { nextSorts } from '../../../sorting/nextSorts'
 import { useRequestSearch } from '../hooks/useRequestSearch'
 import RequestFilterBar from './RequestFilterBar'
 import RequestsResults from './RequestsResults'
@@ -55,17 +56,6 @@ function RequestsPage({ currentUser }: RequestsPageProps) {
       />
     </Paper>
   )
-}
-
-function nextSorts(current: RequestSort[], field: RequestSortField): RequestSort[] {
-  const sort = current.find((x) => x.field === field)
-  if (sort === undefined) {
-    return [...current, { field, direction: 'Asc' }]
-  }
-  if (sort.direction === 'Asc') {
-    return current.map((x) => (x.field === field ? { field, direction: 'Desc' } : x))
-  }
-  return current.filter((x) => x.field !== field)
 }
 
 export default RequestsPage

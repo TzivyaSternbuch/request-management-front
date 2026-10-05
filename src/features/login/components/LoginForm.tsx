@@ -7,11 +7,9 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import type { CurrentUser } from '../../../auth/currentUser'
-import { useLogin } from '../hooks/useLogin'
+import { parseUserId } from '../../../auth/userId'
 import AppLogo from '../../../components/layout/AppLogo'
-
-// The server reads X-User-Id into an int, so larger values would be rejected.
-const MAX_USER_ID = 2_147_483_647
+import { useLogin } from '../hooks/useLogin'
 
 interface LoginFormProps {
   onLogin: (user: CurrentUser) => void
@@ -58,12 +56,6 @@ function LoginForm({ onLogin }: LoginFormProps) {
       </Card>
     </Box>
   )
-}
-
-// Returns null for an empty, fractional, non-positive or too large id, which keeps "Log in" disabled.
-function parseUserId(text: string): number | null {
-  const userId = Number(text)
-  return Number.isInteger(userId) && userId > 0 && userId <= MAX_USER_ID ? userId : null
 }
 
 export default LoginForm
