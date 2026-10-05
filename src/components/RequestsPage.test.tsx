@@ -9,8 +9,7 @@ import { createQueryClientWrapper } from '../test/createQueryClientWrapper'
 import { createRequest } from '../test/createRequest'
 import RequestsPage from './RequestsPage'
 
-vi.mock(import('../api/requestsApi'), async (importOriginal) => ({
-  ...(await importOriginal()),
+vi.mock(import('../api/requestsApi'), () => ({
   searchRequests: vi.fn(),
 }))
 

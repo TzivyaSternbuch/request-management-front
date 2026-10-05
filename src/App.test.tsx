@@ -3,13 +3,17 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { MemoryRouter } from 'react-router'
 import { searchRequests } from './api/requestsApi'
+import { getCurrentUser } from './api/usersApi'
 import { saveCurrentUser } from './auth/currentUserStorage'
 import App from './App'
 import { createQueryClientWrapper } from './test/createQueryClientWrapper'
 
-vi.mock(import('./api/requestsApi'), async (importOriginal) => ({
-  ...(await importOriginal()),
+vi.mock(import('./api/requestsApi'), () => ({
   searchRequests: vi.fn(),
+}))
+
+vi.mock(import('./api/usersApi'), () => ({
+  getCurrentUser: vi.fn(),
 }))
 
 const REQUESTS_PATH = '/requests'
@@ -29,6 +33,7 @@ function renderAppAt(path: string) {
 describe('App', () => {
   beforeEach(() => {
     vi.mocked(searchRequests).mockResolvedValue({ items: [], totalCount: 0, page: 1, pageSize: 20 })
+    vi.mocked(getCurrentUser).mockResolvedValue({ userId: 1, isAdministrator: false })
   })
 
   afterEach(() => window.sessionStorage.clear())

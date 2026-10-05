@@ -5,10 +5,9 @@ import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import ToggleButton from '@mui/material/ToggleButton'
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import Typography from '@mui/material/Typography'
 import type { CurrentUser } from '../auth/currentUser'
+import { useLogin } from '../hooks/useLogin'
 import AppLogo from './AppLogo'
 
 // The server reads X-User-Id into an int, so larger values would be rejected.
@@ -20,7 +19,7 @@ interface LoginFormProps {
 
 function LoginForm({ onLogin }: LoginFormProps) {
   const [userIdText, setUserIdText] = useState('')
-  const [isAdministrator, setIsAdministrator] = useState(false)
+  const { login, error, isLoading } = useLogin(onLogin)
 
   const userId = parseUserId(userIdText)
 
@@ -29,14 +28,7 @@ function LoginForm({ onLogin }: LoginFormProps) {
     if (userId === null) {
       return
     }
-    onLogin({ userId, isAdministrator })
-  }
-
-  // The group lets the selected button be clicked again, which reports null – keep the current role then.
-  function handleRoleChange(isAdministratorSelected: boolean | null) {
-    if (isAdministratorSelected !== null) {
-      setIsAdministrator(isAdministratorSelected)
-    }
+    login(userId)
   }
 
   return (
@@ -56,24 +48,10 @@ function LoginForm({ onLogin }: LoginFormProps) {
             required
             value={userIdText}
             onChange={(event) => setUserIdText(event.target.value)}
+            error={error !== null}
+            helperText={error}
           />
-          <Stack spacing={1}>
-            <Typography variant="body2" color="text.secondary" id="role-label">
-              Role
-            </Typography>
-            <ToggleButtonGroup
-              exclusive
-              fullWidth
-              color="primary"
-              aria-labelledby="role-label"
-              value={isAdministrator}
-              onChange={(_event, value: boolean | null) => handleRoleChange(value)}
-            >
-              <ToggleButton value={false}>Regular user</ToggleButton>
-              <ToggleButton value={true}>Administrator</ToggleButton>
-            </ToggleButtonGroup>
-          </Stack>
-          <Button type="submit" variant="contained" size="large" disabled={userId === null}>
+          <Button type="submit" variant="contained" size="large" disabled={userId === null} loading={isLoading}>
             Log in
           </Button>
         </Stack>

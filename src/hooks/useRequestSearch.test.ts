@@ -2,15 +2,14 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { PagedResult } from '../api/commonModels'
 import type { RequestDto, SearchRequestsQuery } from '../api/requestModels'
-import { ApiError, searchRequests } from '../api/requestsApi'
+import { ApiError } from '../api/apiError'
+import { searchRequests } from '../api/requestsApi'
 import type { CurrentUser } from '../auth/currentUser'
 import { createQueryClientWrapper } from '../test/createQueryClientWrapper'
 import { createRequest } from '../test/createRequest'
 import { useRequestSearch } from './useRequestSearch'
 
-// Keep the real ApiError so the hook's instanceof check still works.
-vi.mock(import('../api/requestsApi'), async (importOriginal) => ({
-  ...(await importOriginal()),
+vi.mock(import('../api/requestsApi'), () => ({
   searchRequests: vi.fn(),
 }))
 
