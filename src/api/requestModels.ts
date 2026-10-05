@@ -25,3 +25,8 @@ export interface SearchRequestsQuery {
   page?: number
   pageSize?: number
 }
+
+export type RequestSearchFilters = Pick<
+  SearchRequestsQuery,
+  'requestNumber' | 'status' | 'type' | 'createdFrom' | 'createdTo'
+>

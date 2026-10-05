@@ -10,10 +10,11 @@ interface RequestSearchState {
   data: PagedResult<RequestDto> | null
   error: string | null
   isLoading: boolean
+  isRefreshing: boolean
 }
 
 export function useRequestSearch(query: SearchRequestsQuery, currentUser: CurrentUser): RequestSearchState {
-  const { data, error, isPending } = useQuery({
+  const { data, error, isPending, isFetching } = useQuery({
     // Results are cached per query and user, so the user is part of the key.
     queryKey: ['requests', query, currentUser],
     queryFn: ({ signal }) => searchRequests(query, currentUser, signal),
@@ -25,6 +26,8 @@ export function useRequestSearch(query: SearchRequestsQuery, currentUser: Curren
     data: data ?? null,
     error: error === null ? null : toErrorMessage(error),
     isLoading: isPending,
+    // Fetching while results are already shown: a new search or page, not the first load.
+    isRefreshing: isFetching && !isPending,
   }
 }
 

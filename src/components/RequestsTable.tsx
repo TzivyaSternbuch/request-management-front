@@ -8,13 +8,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import type { RequestDto, RequestStatus } from '../api/requestModels'
-
-const STATUS_LABELS: Record<RequestStatus, string> = {
-  New: 'New',
-  InProgress: 'In progress',
-  Completed: 'Completed',
-  Cancelled: 'Cancelled',
-}
+import { STATUS_LABELS } from './requestLabels'
 
 const STATUS_COLORS: Record<RequestStatus, ChipProps['color']> = {
   New: 'info',
