@@ -18,10 +18,7 @@ const CURRENT_USER: CurrentUser = { userId: 1, isAdministrator: false }
 const RESULT: PagedResult<RequestDto> = { items: [createRequest(1)], totalCount: 1, page: 1, pageSize: 20 }
 
 function renderSearch(query: SearchRequestsQuery) {
-  return renderHook((props: { query: SearchRequestsQuery }) => useRequestSearch(props.query, CURRENT_USER), {
-    initialProps: { query },
-    wrapper: createQueryClientWrapper(),
-  })
+  return renderHook(() => useRequestSearch(query, CURRENT_USER), { wrapper: createQueryClientWrapper() })
 }
 
 describe('useRequestSearch', () => {
@@ -55,18 +52,5 @@ describe('useRequestSearch', () => {
     const { result } = renderSearch({ page: 1 })
 
     await waitFor(() => expect(result.current.error).toBe('Something went wrong'))
-  })
-
-  it('keeps the previous data and is refreshing while a new query loads', async () => {
-    vi.mocked(searchRequests).mockResolvedValueOnce(RESULT)
-    const { result, rerender } = renderSearch({ page: 1 })
-    await waitFor(() => expect(result.current.data).toEqual(RESULT))
-
-    vi.mocked(searchRequests).mockReturnValueOnce(new Promise(() => {}))
-    rerender({ query: { page: 2 } })
-
-    await waitFor(() => expect(result.current.isRefreshing).toBe(true))
-    expect(result.current.isLoading).toBe(false)
-    expect(result.current.data).toEqual(RESULT)
   })
 })

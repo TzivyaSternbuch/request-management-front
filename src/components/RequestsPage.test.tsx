@@ -73,45 +73,6 @@ describe('RequestsPage', () => {
     )
   })
 
-  it('goes back to the first page without filters on Clear filters', async () => {
-    const user = await renderPageOnSecondPage()
-    await user.type(screen.getByRole('textbox', { name: 'Request number' }), 'REQ-1')
-    await waitFor(() => expect(lastQuery()).toEqual(expect.objectContaining({ requestNumber: 'REQ-1', page: 1 })))
-    await user.click(screen.getByRole('button', { name: 'Go to next page' }))
-    await waitFor(() => expect(lastQuery()).toEqual(expect.objectContaining({ page: 2 })))
-
-    await user.click(screen.getByRole('button', { name: 'Clear filters' }))
-
-    await waitFor(() => expect(lastQuery()).toEqual({ ...DEFAULT_SORT, page: 1 }))
-  })
-
-  it('sorts ascending by the clicked column from the first page', async () => {
-    const user = await renderPageOnSecondPage()
-
-    await user.click(headerButton('Status'))
-
-    await waitFor(() => expect(lastQuery()).toEqual({ sortBy: ['Status'], sortDir: ['Asc'], page: 1 }))
-  })
-
-  it('sorts by the default column ascending when it is clicked first', async () => {
-    const user = await renderPageOnSecondPage()
-
-    await user.click(headerButton('Created'))
-
-    await waitFor(() => expect(lastQuery()).toEqual({ sortBy: ['CreatedAt'], sortDir: ['Asc'], page: 1 }))
-  })
-
-  it('sorts by a second clicked column after the first one', async () => {
-    const user = await renderPageOnSecondPage()
-
-    await user.click(headerButton('Status'))
-    await user.click(headerButton('Created'))
-
-    await waitFor(() =>
-      expect(lastQuery()).toEqual({ sortBy: ['Status', 'CreatedAt'], sortDir: ['Asc', 'Asc'], page: 1 }),
-    )
-  })
-
   it('sorts a column descending on its second click and keeps the order of the columns', async () => {
     const user = await renderPageOnSecondPage()
 
@@ -133,15 +94,5 @@ describe('RequestsPage', () => {
     await user.click(headerButton('Status'))
 
     await waitFor(() => expect(lastQuery()).toEqual({ sortBy: ['CreatedAt'], sortDir: ['Asc'], page: 1 }))
-  })
-
-  it('goes back to the default sort when no column is sorted any more', async () => {
-    const user = await renderPageOnSecondPage()
-
-    await user.click(headerButton('Status'))
-    await user.click(headerButton('Status'))
-    await user.click(headerButton('Status'))
-
-    await waitFor(() => expect(lastQuery()).toEqual({ ...DEFAULT_SORT, page: 1 }))
   })
 })

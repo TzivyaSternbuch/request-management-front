@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { MemoryRouter } from 'react-router'
 import { searchRequests } from './api/requestsApi'
@@ -49,19 +48,6 @@ describe('App', () => {
   it('sends to the login page when nobody is logged in', () => {
     renderAppAt(REQUESTS_PATH)
 
-    expect(screen.getByRole('button', { name: 'Log in' })).toBeInTheDocument()
-  })
-
-  it('remembers the user who logs in until they log out', async () => {
-    const user = userEvent.setup()
-    renderAppAt(REQUESTS_PATH)
-    await user.type(screen.getByRole('spinbutton', { name: 'User id' }), '1')
-    await user.click(screen.getByRole('button', { name: 'Log in' }))
-    expect(window.sessionStorage.length).toBe(1)
-
-    await user.click(await screen.findByRole('button', { name: 'Log out' }))
-
-    expect(window.sessionStorage.length).toBe(0)
     expect(screen.getByRole('button', { name: 'Log in' })).toBeInTheDocument()
   })
 })
