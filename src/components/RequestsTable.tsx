@@ -7,8 +7,9 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
-import type { RequestDto, RequestStatus } from '../api/requestModels'
+import type { RequestDto, RequestSort, RequestSortField, RequestStatus } from '../api/requestModels'
 import { STATUS_LABELS } from './requestLabels'
+import SortableHeaderCell from './SortableHeaderCell'
 
 const STATUS_COLORS: Record<RequestStatus, ChipProps['color']> = {
   New: 'info',
@@ -21,22 +22,24 @@ const CREATED_AT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 
 
 interface RequestsTableProps {
   requests: RequestDto[]
+  sorts: RequestSort[]
+  onSortChange: (field: RequestSortField) => void
 }
 
-function RequestsTable({ requests }: RequestsTableProps) {
+function RequestsTable({ requests, sorts, onSortChange }: RequestsTableProps) {
   return (
     <TableContainer>
       {/* Cells stay on one line; on narrow screens the table scrolls sideways instead. */}
       <Table sx={{ '& th, & td': { whiteSpace: 'nowrap' } }}>
         <TableHead sx={{ '& th': { fontWeight: 600, color: 'text.secondary', bgcolor: 'grey.50' } }}>
           <TableRow>
-            <TableCell>Number</TableCell>
+            <SortableHeaderCell label="Number" field="RequestNumber" sorts={sorts} onSortChange={onSortChange} />
             <TableCell>Customer</TableCell>
             <TableCell>Owner</TableCell>
             <TableCell>Assignee</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Type</TableCell>
-            <TableCell>Created</TableCell>
+            <SortableHeaderCell label="Status" field="Status" sorts={sorts} onSortChange={onSortChange} />
+            <SortableHeaderCell label="Type" field="Type" sorts={sorts} onSortChange={onSortChange} />
+            <SortableHeaderCell label="Created" field="CreatedAt" sorts={sorts} onSortChange={onSortChange} />
           </TableRow>
         </TableHead>
         <TableBody>

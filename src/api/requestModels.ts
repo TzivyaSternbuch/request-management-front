@@ -20,8 +20,8 @@ export interface SearchRequestsQuery {
   type?: RequestType[]
   createdFrom?: string
   createdTo?: string
-  sortBy?: RequestSortField
-  sortDir?: SortDirection
+  sortBy?: RequestSortField[]
+  sortDir?: SortDirection[]
   page?: number
   pageSize?: number
 }
@@ -30,3 +30,8 @@ export type RequestSearchFilters = Pick<
   SearchRequestsQuery,
   'requestNumber' | 'status' | 'type' | 'createdFrom' | 'createdTo'
 >
+
+export interface RequestSort {
+  field: RequestSortField
+  direction: SortDirection
+}

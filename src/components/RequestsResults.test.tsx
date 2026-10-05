@@ -20,6 +20,8 @@ function renderResults(props: Partial<Parameters<typeof RequestsResults>[0]> = {
       error={null}
       isLoading={false}
       isRefreshing={false}
+      sorts={[{ field: 'CreatedAt', direction: 'Desc' }]}
+      onSortChange={vi.fn()}
       onPageChange={onPageChange}
       {...props}
     />,

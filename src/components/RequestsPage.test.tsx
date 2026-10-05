@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { PagedResult } from '../api/commonModels'
@@ -16,6 +16,7 @@ vi.mock(import('../api/requestsApi'), async (importOriginal) => ({
 
 const CURRENT_USER: CurrentUser = { userId: 1, isAdministrator: false }
 const PAGE_SIZE = 20
+const DEFAULT_SORT = { sortBy: ['CreatedAt'], sortDir: ['Desc'] }
 
 // Enough requests for two pages, so the user can move to page 2.
 const TWO_PAGES: PagedResult<RequestDto> = {
@@ -33,8 +34,13 @@ async function renderPageOnSecondPage() {
   const user = userEvent.setup()
   render(<RequestsPage currentUser={CURRENT_USER} />, { wrapper: createQueryClientWrapper() })
   await user.click(await screen.findByRole('button', { name: 'Go to next page' }))
-  await waitFor(() => expect(lastQuery()).toEqual({ page: 2 }))
+  await waitFor(() => expect(lastQuery()).toEqual({ ...DEFAULT_SORT, page: 2 }))
   return user
+}
+
+// The filter bar has buttons with the same names (Status, Created), so look only inside the table.
+function headerButton(name: string) {
+  return within(screen.getByRole('table')).getByRole('button', { name })
 }
 
 describe('RequestsPage', () => {
@@ -47,7 +53,7 @@ describe('RequestsPage', () => {
     render(<RequestsPage currentUser={CURRENT_USER} />, { wrapper: createQueryClientWrapper() })
 
     expect(await screen.findByRole('cell', { name: 'REQ-1' })).toBeInTheDocument()
-    expect(searchRequests).toHaveBeenCalledWith({ page: 1 }, CURRENT_USER, expect.any(AbortSignal))
+    expect(searchRequests).toHaveBeenCalledWith({ ...DEFAULT_SORT, page: 1 }, CURRENT_USER, expect.any(AbortSignal))
   })
 
   it('searches by itself with the form filters from the first page', async () => {
@@ -62,6 +68,7 @@ describe('RequestsPage', () => {
         type: [],
         createdFrom: '',
         createdTo: '',
+        ...DEFAULT_SORT,
         page: 1,
       }),
     )
@@ -76,6 +83,66 @@ describe('RequestsPage', () => {
 
     await user.click(screen.getByRole('button', { name: 'Clear filters' }))
 
-    await waitFor(() => expect(lastQuery()).toEqual({ page: 1 }))
+    await waitFor(() => expect(lastQuery()).toEqual({ ...DEFAULT_SORT, page: 1 }))
+  })
+
+  it('sorts ascending by the clicked column from the first page', async () => {
+    const user = await renderPageOnSecondPage()
+
+    await user.click(headerButton('Status'))
+
+    await waitFor(() => expect(lastQuery()).toEqual({ sortBy: ['Status'], sortDir: ['Asc'], page: 1 }))
+  })
+
+  it('sorts by the default column ascending when it is clicked first', async () => {
+    const user = await renderPageOnSecondPage()
+
+    await user.click(headerButton('Created'))
+
+    await waitFor(() => expect(lastQuery()).toEqual({ sortBy: ['CreatedAt'], sortDir: ['Asc'], page: 1 }))
+  })
+
+  it('sorts by a second clicked column after the first one', async () => {
+    const user = await renderPageOnSecondPage()
+
+    await user.click(headerButton('Status'))
+    await user.click(headerButton('Created'))
+
+    await waitFor(() =>
+      expect(lastQuery()).toEqual({ sortBy: ['Status', 'CreatedAt'], sortDir: ['Asc', 'Asc'], page: 1 }),
+    )
+  })
+
+  it('sorts a column descending on its second click and keeps the order of the columns', async () => {
+    const user = await renderPageOnSecondPage()
+
+    await user.click(headerButton('Status'))
+    await user.click(headerButton('Created'))
+    await user.click(headerButton('Status'))
+
+    await waitFor(() =>
+      expect(lastQuery()).toEqual({ sortBy: ['Status', 'CreatedAt'], sortDir: ['Desc', 'Asc'], page: 1 }),
+    )
+  })
+
+  it('stops sorting by a column on its third click', async () => {
+    const user = await renderPageOnSecondPage()
+
+    await user.click(headerButton('Status'))
+    await user.click(headerButton('Created'))
+    await user.click(headerButton('Status'))
+    await user.click(headerButton('Status'))
+
+    await waitFor(() => expect(lastQuery()).toEqual({ sortBy: ['CreatedAt'], sortDir: ['Asc'], page: 1 }))
+  })
+
+  it('goes back to the default sort when no column is sorted any more', async () => {
+    const user = await renderPageOnSecondPage()
+
+    await user.click(headerButton('Status'))
+    await user.click(headerButton('Status'))
+    await user.click(headerButton('Status'))
+
+    await waitFor(() => expect(lastQuery()).toEqual({ ...DEFAULT_SORT, page: 1 }))
   })
 })

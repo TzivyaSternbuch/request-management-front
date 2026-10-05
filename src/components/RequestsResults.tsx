@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import LinearProgress from '@mui/material/LinearProgress'
 import TablePagination from '@mui/material/TablePagination'
 import type { PagedResult } from '../api/commonModels'
-import type { RequestDto } from '../api/requestModels'
+import type { RequestDto, RequestSort, RequestSortField } from '../api/requestModels'
 import RequestsTable from './RequestsTable'
 import StateMessage from './StateMessage'
 
@@ -16,10 +16,20 @@ interface RequestsResultsProps {
   error: string | null
   isLoading: boolean
   isRefreshing: boolean
+  sorts: RequestSort[]
+  onSortChange: (field: RequestSortField) => void
   onPageChange: (page: number) => void
 }
 
-function RequestsResults({ data, error, isLoading, isRefreshing, onPageChange }: RequestsResultsProps) {
+function RequestsResults({
+  data,
+  error,
+  isLoading,
+  isRefreshing,
+  sorts,
+  onSortChange,
+  onPageChange,
+}: RequestsResultsProps) {
   if (isLoading) {
     return (
       <StateMessage
@@ -58,7 +68,7 @@ function RequestsResults({ data, error, isLoading, isRefreshing, onPageChange }:
       {isRefreshing && (
         <LinearProgress aria-label="Updating results" sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1 }} />
       )}
-      <RequestsTable requests={data.items} />
+      <RequestsTable requests={data.items} sorts={sorts} onSortChange={onSortChange} />
       {/* The server counts pages from 1, MUI from 0. */}
       <TablePagination
         component="div"
