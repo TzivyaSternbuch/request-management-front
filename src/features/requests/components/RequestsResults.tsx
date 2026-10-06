@@ -4,10 +4,11 @@ import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import LinearProgress from '@mui/material/LinearProgress'
 import TablePagination from '@mui/material/TablePagination'
-import type { PagedResult } from '../api/commonModels'
-import type { RequestDto, RequestSort, RequestSortField } from '../api/requestModels'
+import type { PagedResult } from '../../../api/commonModels'
+import type { RequestDto, RequestSortField } from '../api/requestModels'
+import type { RequestSort } from '../models/requestSearchModels'
 import RequestsTable from './RequestsTable'
-import StateMessage from './StateMessage'
+import StateMessage from '../../../components/StateMessage'
 
 const STATE_ICON_SIZE = 48
 

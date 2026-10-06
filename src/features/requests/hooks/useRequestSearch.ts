@@ -1,9 +1,9 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { ApiError } from '../api/apiError'
+import { ApiError } from '../../../api/apiError'
 import { searchRequests } from '../api/requestsApi'
-import type { PagedResult } from '../api/commonModels'
+import type { PagedResult } from '../../../api/commonModels'
 import type { RequestDto, SearchRequestsQuery } from '../api/requestModels'
-import type { CurrentUser } from '../auth/currentUser'
+import type { CurrentUser } from '../../../auth/currentUser'
 
 const FALLBACK_ERROR_MESSAGE = 'Something went wrong'
 

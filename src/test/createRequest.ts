@@ -1,4 +1,4 @@
-import type { RequestDto } from '../api/requestModels'
+import type { RequestDto } from '../features/requests/api/requestModels'
 
 export function createRequest(id: number): RequestDto {
   return {

@@ -6,12 +6,11 @@ import Card from '@mui/material/Card'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import type { CurrentUser } from '../auth/currentUser'
+import type { CurrentUser } from '../../../auth/currentUser'
+import { parseUserId } from '../../../auth/userId'
+import { APP_NAME } from '../../../components/layout/appName'
+import AppLogo from '../../../components/layout/AppLogo'
 import { useLogin } from '../hooks/useLogin'
-import AppLogo from './AppLogo'
-
-// The server reads X-User-Id into an int, so larger values would be rejected.
-const MAX_USER_ID = 2_147_483_647
 
 interface LoginFormProps {
   onLogin: (user: CurrentUser) => void
@@ -38,7 +37,7 @@ function LoginForm({ onLogin }: LoginFormProps) {
           <Stack spacing={1} sx={{ alignItems: 'center', textAlign: 'center' }}>
             <AppLogo size={48} />
             <Typography variant="h5" component="h1" sx={{ fontWeight: 600 }}>
-              Request Management
+              {APP_NAME}
             </Typography>
             <Typography color="text.secondary">Log in to see your requests</Typography>
           </Stack>
@@ -58,12 +57,6 @@ function LoginForm({ onLogin }: LoginFormProps) {
       </Card>
     </Box>
   )
-}
-
-// Returns null for an empty, fractional, non-positive or too large id, which keeps "Log in" disabled.
-function parseUserId(text: string): number | null {
-  const userId = Number(text)
-  return Number.isInteger(userId) && userId > 0 && userId <= MAX_USER_ID ? userId : null
 }
 
 export default LoginForm

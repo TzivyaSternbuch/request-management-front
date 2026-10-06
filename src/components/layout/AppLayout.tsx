@@ -4,6 +4,7 @@ import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
+import { APP_NAME } from './appName'
 import AppLogo from './AppLogo'
 
 interface AppLayoutProps {
@@ -19,7 +20,7 @@ function AppLayout({ title, onLogout, children }: AppLayoutProps) {
         <Toolbar sx={{ gap: 2 }}>
           <AppLogo size={32} />
           <Typography variant="h6" component="span" noWrap sx={{ flexGrow: 1, fontWeight: 600 }}>
-            Request Management
+            {APP_NAME}
           </Typography>
           <Button variant="outlined" sx={{ flexShrink: 0 }} onClick={onLogout}>
             Log out

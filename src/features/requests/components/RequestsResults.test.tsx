@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import type { PagedResult } from '../api/commonModels'
+import type { PagedResult } from '../../../api/commonModels'
 import type { RequestDto } from '../api/requestModels'
-import { createRequest } from '../test/createRequest'
+import { createRequest } from '../../../test/createRequest'
 import RequestsResults from './RequestsResults'
 
 const PAGE_SIZE = 20

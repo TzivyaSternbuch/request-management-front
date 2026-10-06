@@ -1,31 +1,20 @@
-import { useEffect, useRef, useState } from 'react'
-import type { RequestSearchFilters, RequestStatus, RequestType } from '../api/requestModels'
-
-// Mirrors SearchRequestsQuery.RequestNumberMaxLength on the server.
-const REQUEST_NUMBER_MAX_LENGTH = 50
+import { useState } from 'react'
+import { useDebouncedCallback } from '../../../hooks/useDebouncedCallback'
+import {
+  canApply,
+  hasAnyFilter,
+  isRangeReversed,
+  REQUEST_NUMBER_MAX_LENGTH,
+  toFilters,
+} from '../logic/requestSearchFormRules'
+import type { DateField, RequestSearchFilters, SearchFormValues, SetSearchField } from '../models/requestSearchModels'
 
 // Wait until the user pauses, so typing a request number does not send a search per key press.
 export const SEARCH_DELAY_MS = 400
 
-// While a year is being typed the browser already reports it (0002, 0020, 0202),
-// so a date before this one is treated as not finished yet.
-const FIRST_COMPLETE_DATE = '1000-01-01'
-
 const REQUEST_NUMBER_TOO_LONG = `Use at most ${REQUEST_NUMBER_MAX_LENGTH} characters.`
 const FROM_AFTER_TO = 'Must be on or before "To".'
 const TO_BEFORE_FROM = 'Must be on or after "From".'
-
-export interface SearchFormValues {
-  requestNumber: string
-  status: RequestStatus[]
-  type: RequestType[]
-  createdFrom: string
-  createdTo: string
-}
-
-export type SetSearchField = <K extends keyof SearchFormValues>(field: K, value: SearchFormValues[K]) => void
-
-export type DateField = 'createdFrom' | 'createdTo'
 
 type SearchFormErrors = Partial<Record<keyof SearchFormValues, string>>
 
@@ -53,9 +42,7 @@ export function useRequestSearchForm(onSearch: (filters: RequestSearchFilters) =
   const [values, setValues] = useState(EMPTY_FORM_VALUES)
   const [appliedValues, setAppliedValues] = useState(EMPTY_FORM_VALUES)
   const [errors, setErrors] = useState<SearchFormErrors>({})
-  const pendingSearchRef = useRef<number | undefined>(undefined)
-
-  useEffect(() => () => window.clearTimeout(pendingSearchRef.current), [])
+  const pendingSearch = useDebouncedCallback(onSearch, SEARCH_DELAY_MS)
 
   function setField<K extends keyof SearchFormValues>(field: K, value: SearchFormValues[K]) {
     const newValues = { ...values, [field]: value }
@@ -87,12 +74,11 @@ export function useRequestSearchForm(onSearch: (filters: RequestSearchFilters) =
 
   function apply(newValues: SearchFormValues) {
     setAppliedValues(newValues)
-    window.clearTimeout(pendingSearchRef.current)
-    pendingSearchRef.current = window.setTimeout(() => onSearch(toFilters(newValues)), SEARCH_DELAY_MS)
+    pendingSearch.schedule(toFilters(newValues))
   }
 
   function reset() {
-    window.clearTimeout(pendingSearchRef.current)
+    pendingSearch.cancel()
     setValues(EMPTY_FORM_VALUES)
     setAppliedValues(EMPTY_FORM_VALUES)
     setErrors({})
@@ -100,31 +86,4 @@ export function useRequestSearchForm(onSearch: (filters: RequestSearchFilters) =
   }
 
   return { values, appliedValues, errors, hasFilters: hasAnyFilter(values), setField, commitDate, reset }
-}
-
-function canApply(values: SearchFormValues): boolean {
-  return isCompleteDate(values.createdFrom) && isCompleteDate(values.createdTo) && !isRangeReversed(values)
-}
-
-function isCompleteDate(date: string): boolean {
-  return date === '' || date >= FIRST_COMPLETE_DATE
-}
-
-// yyyy-MM-dd strings sort the same as the dates they stand for, so comparing them as text is enough.
-function isRangeReversed(values: SearchFormValues): boolean {
-  return values.createdFrom !== '' && values.createdTo !== '' && values.createdFrom > values.createdTo
-}
-
-function hasAnyFilter(values: SearchFormValues): boolean {
-  return (
-    values.requestNumber.trim() !== '' ||
-    values.status.length > 0 ||
-    values.type.length > 0 ||
-    values.createdFrom !== '' ||
-    values.createdTo !== ''
-  )
-}
-
-function toFilters(values: SearchFormValues): RequestSearchFilters {
-  return { ...values, requestNumber: values.requestNumber.trim() }
 }

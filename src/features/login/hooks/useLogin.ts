@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
-import { ApiError } from '../api/apiError'
+import { ApiError } from '../../../api/apiError'
 import { getCurrentUser } from '../api/usersApi'
-import type { CurrentUser } from '../auth/currentUser'
+import type { CurrentUser } from '../../../auth/currentUser'
 
 const HTTP_UNAUTHORIZED = 401
 const UNKNOWN_USER_MESSAGE = 'There is no user with this id.'

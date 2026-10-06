@@ -1,4 +1,5 @@
 import type { CurrentUser } from './currentUser'
+import { isValidUserId } from './userId'
 
 const STORAGE_KEY = 'currentUser'
 
@@ -27,7 +28,7 @@ function toCurrentUser(value: unknown): CurrentUser | null {
     return null
   }
   const { userId, isAdministrator } = value as Partial<Record<keyof CurrentUser, unknown>>
-  if (typeof userId !== 'number' || !Number.isInteger(userId) || userId <= 0 || typeof isAdministrator !== 'boolean') {
+  if (!isValidUserId(userId) || typeof isAdministrator !== 'boolean') {
     return null
   }
   return { userId, isAdministrator }

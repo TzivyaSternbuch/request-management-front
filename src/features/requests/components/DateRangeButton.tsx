@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import Button from '@mui/material/Button'
 import Popover from '@mui/material/Popover'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
-import type { DateField, SearchFormValues } from '../hooks/useRequestSearchForm'
-import { formatDateOnly } from './formatDateOnly'
+import DropdownButton from '../../../components/DropdownButton'
+import type { DateField, SearchFormValues } from '../models/requestSearchModels'
+import { formatDateOnly } from '../../../utils/formatDate'
 
 const BUTTON_LABEL = 'Created'
 const POPOVER_WIDTH = 260
@@ -32,17 +31,13 @@ function DateRangeButton({ values, appliedValues, errors, onChange, onCommit }: 
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color={isActive ? 'primary' : 'inherit'}
-        endIcon={<ExpandMoreIcon />}
-        aria-haspopup="dialog"
-        aria-expanded={anchor !== null}
-        onClick={(event) => setAnchor(event.currentTarget)}
-        sx={isActive ? undefined : { borderColor: 'divider' }}
-      >
-        {toButtonLabel(appliedValues)}
-      </Button>
+      <DropdownButton
+        label={toButtonLabel(appliedValues)}
+        isActive={isActive}
+        isOpen={anchor !== null}
+        popupRole="dialog"
+        onOpen={setAnchor}
+      />
       <Popover
         anchorEl={anchor}
         open={anchor !== null}

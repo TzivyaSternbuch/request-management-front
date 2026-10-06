@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import DropdownButton from './DropdownButton'
 
 interface FilterMenuButtonProps<T extends string> {
   label: string
@@ -23,17 +22,13 @@ function FilterMenuButton<T extends string>({ label, options, labels, value, onC
 
   return (
     <>
-      <Button
-        variant="outlined"
-        color={isActive ? 'primary' : 'inherit'}
-        endIcon={<ExpandMoreIcon />}
-        aria-haspopup="menu"
-        aria-expanded={anchor !== null}
-        onClick={(event) => setAnchor(event.currentTarget)}
-        sx={isActive ? undefined : { borderColor: 'divider' }}
-      >
-        {isActive ? `${label} · ${value.length}` : label}
-      </Button>
+      <DropdownButton
+        label={isActive ? `${label} · ${value.length}` : label}
+        isActive={isActive}
+        isOpen={anchor !== null}
+        popupRole="menu"
+        onOpen={setAnchor}
+      />
       {/* Stays open after a click, so several options can be picked in a row. */}
       <Menu anchorEl={anchor} open={anchor !== null} onClose={() => setAnchor(null)}>
         {options.map((option) => (

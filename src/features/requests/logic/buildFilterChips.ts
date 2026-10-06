@@ -1,38 +1,15 @@
-import Chip from '@mui/material/Chip'
-import Stack from '@mui/material/Stack'
-import type { SearchFormValues, SetSearchField } from '../hooks/useRequestSearchForm'
-import { formatDateOnly } from './formatDateOnly'
+import { formatDateOnly } from '../../../utils/formatDate'
+import type { SearchFormValues, SetSearchField } from '../models/requestSearchModels'
 import { STATUS_LABELS, TYPE_LABELS } from './requestLabels'
 
-interface FilterChip {
+export interface FilterChip {
   key: string
   label: string
   onDelete: () => void
 }
 
-interface ActiveFilterChipsProps {
-  values: SearchFormValues
-  onChange: SetSearchField
-}
-
-function ActiveFilterChips({ values, onChange }: ActiveFilterChipsProps) {
-  const chips = buildChips(values, onChange)
-
-  if (chips.length === 0) {
-    return null
-  }
-
-  return (
-    <Stack direction="row" useFlexGap sx={{ flexWrap: 'wrap', gap: 1, mt: 1.5 }}>
-      {chips.map((chip) => (
-        <Chip key={chip.key} size="small" label={chip.label} onDelete={chip.onDelete} />
-      ))}
-    </Stack>
-  )
-}
-
 // One chip per active value, so each status or type can be removed on its own.
-function buildChips(values: SearchFormValues, onChange: SetSearchField): FilterChip[] {
+export function buildFilterChips(values: SearchFormValues, onChange: SetSearchField): FilterChip[] {
   const chips: FilterChip[] = []
   const requestNumber = values.requestNumber.trim()
 
@@ -74,5 +51,3 @@ function buildChips(values: SearchFormValues, onChange: SetSearchField): FilterC
 
   return chips
 }
-
-export default ActiveFilterChips

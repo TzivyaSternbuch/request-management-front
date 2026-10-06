@@ -7,9 +7,11 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
-import type { RequestDto, RequestSort, RequestSortField, RequestStatus } from '../api/requestModels'
-import { STATUS_LABELS } from './requestLabels'
-import SortableHeaderCell from './SortableHeaderCell'
+import type { RequestDto, RequestSortField, RequestStatus } from '../api/requestModels'
+import type { RequestSort } from '../models/requestSearchModels'
+import { STATUS_LABELS } from '../logic/requestLabels'
+import SortableHeaderCell from '../../../components/SortableHeaderCell'
+import { formatDate } from '../../../utils/formatDate'
 
 const STATUS_COLORS: Record<RequestStatus, ChipProps['color']> = {
   New: 'info',
@@ -17,8 +19,6 @@ const STATUS_COLORS: Record<RequestStatus, ChipProps['color']> = {
   Completed: 'success',
   Cancelled: 'default',
 }
-
-const CREATED_AT_FORMAT: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' }
 
 interface RequestsTableProps {
   requests: RequestDto[]
@@ -64,7 +64,7 @@ function RequestsTable({ requests, sorts, onSortChange }: RequestsTableProps) {
                 />
               </TableCell>
               <TableCell>{request.requestType}</TableCell>
-              <TableCell>{new Date(request.createdAt).toLocaleDateString(undefined, CREATED_AT_FORMAT)}</TableCell>
+              <TableCell>{formatDate(request.createdAt)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

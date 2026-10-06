@@ -2,7 +2,7 @@ import TableCell from '@mui/material/TableCell'
 import TableSortLabel from '@mui/material/TableSortLabel'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import type { RequestSort, RequestSortField, SortDirection } from '../api/requestModels'
+import type { Sort, SortDirection } from '../sorting/sortModels'
 
 // MUI writes directions in lower case; the server uses Asc / Desc.
 const MUI_DIRECTIONS: Record<SortDirection, 'asc' | 'desc'> = {
@@ -12,14 +12,14 @@ const MUI_DIRECTIONS: Record<SortDirection, 'asc' | 'desc'> = {
 
 const SORT_HINT = 'Click to sort ascending, again for descending, a third time to stop sorting by this column'
 
-interface SortableHeaderCellProps {
+interface SortableHeaderCellProps<TField extends string> {
   label: string
-  field: RequestSortField
-  sorts: RequestSort[]
-  onSortChange: (field: RequestSortField) => void
+  field: TField
+  sorts: Sort<TField>[]
+  onSortChange: (field: TField) => void
 }
 
-function SortableHeaderCell({ label, field, sorts, onSortChange }: SortableHeaderCellProps) {
+function SortableHeaderCell<TField extends string>({ label, field, sorts, onSortChange }: SortableHeaderCellProps<TField>) {
   const index = sorts.findIndex((sort) => sort.field === field)
   const sort = sorts[index]
   const direction = sort === undefined ? 'asc' : MUI_DIRECTIONS[sort.direction]
